@@ -1,0 +1,126 @@
+###### For Ubuntu 16 and 17 #########
+
+## for ubuntu 16-17 ++ ###
+### In /etc/systemd/system/myservice.service ###
+
+[Unit]
+Description= CPU monitor
+After=Network.target
+
+[Service]
+User=root
+Restart=always
+Type=forking
+Restart=10
+ExecStart=/bin/sh /etc/service/cpu.sh
+
+[Install]
+WantedBy=multi-user.target
+
+## execute sudo systemctl daemon-reload and sudo systemctl start cpu.service ## service will restart after reboot (After=Network.target)
+
+
+other way to do this is
+
+##### In /etc/init/myservice.conf ######
+ 
+description "service"
+author      "Pierre Goude"
+
+# used to be: start on startup
+# until we found some mounts weren't ready yet while booting
+
+start on started mountall
+stop on shutdown
+
+# automatically respawn
+
+respawn
+respawn limit 99 5
+
+script
+
+
+    exec /bin/sh /etc/service/script.sh
+
+end script
+
+post-start script
+
+
+end script
+
+
+
+## execute sudo start myservice
+
+##############################################################################################
+
+######## For Ubuntu 14 ########
+
+init.d/binbackup
+
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides: Service
+# Required-Start: $remote_fs $syslog
+# Required-Stop: $remote_fs $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Service
+# Description: This file starts and stops Tomcat server
+#
+### END INIT INFO
+
+
+case "$1" in
+ start)
+   /bin/sh /etc/service/script.sh
+   ;;
+ stop)
+    command here
+ ;;
+ restart)
+   command here
+   ;;
+ *)
+   echo "Usage: binbackup {start|stop|restart}" >&2
+   exit 3
+   ;;
+esac
+
+
+## execute sudo start myservice
+
+
+
+################# Example of service ##########################
+
+## this is a simple script that will log services/programs that are using more than 80% of the CPU ##
+
+
+### throw in the script in an eternal loop with while ###
+while true
+do
+### run top and pipe to only get cpu values over 80% and log them ####
+sudo top -b -n 1 | awk '$10 > 80 {print ;}' | sudo tee -a /var/log/CPUmonitor.log
+
+### create an own logrotate just, you can do this in logrotate, but this is fun too ###
+logrotation=$( ls -l /var/log/CPUmonitor.log | awk '{print $5}' )
+if [ $logrotation -gt 500000 ]
+then
+sudo rm -rf | /var/log/CPUmonitor.log
+else
+### just add somthing to separate lines in the log, for fun ###
+echo "___________________________________________________________________" | sudo tee -a /var/log/CPUmonitor.log
+fi
+### add a delay of seconds, for 2 reasons. 1 the service might get heavy if it runs so "fast" 2. too much log ""
+sleep 10
+done
+
+
+
+
+
+
+
