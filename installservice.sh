@@ -1,14 +1,12 @@
 #!/bin/sh
 #for Ubuntu 16-17 only
-
-#this is the first version so it will be a service running a script, updates will come
+#Alpha!
+#This is the first version so it will be a service running a script, updates will come
 
 echo "Type the name of the service"
 read service
 echo "Type path of to the script including script ( /path/script. )"
 read path
-sudo mkdir $path #will create path if it does not exist or just fail
-
 sudo echo "
 [Unit]
 Description= CPU monitor
@@ -29,7 +27,7 @@ sudo echo "plese put script in script-folder"
 read -p "Have you done it (y/n)?" yn
    case $yn in
     [Yy]* ) sudo systemctl daemon-reload
-            echo "press ctrl c to exit script and tail -f /var/log/$service.log to follow the log"
+            echo "press ctrl c to exit script and tail -f yourlog.log to follow the log"
             sudo systemctl start $service
     ;;
 
