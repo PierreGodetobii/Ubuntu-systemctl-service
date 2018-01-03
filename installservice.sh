@@ -9,7 +9,7 @@ echo "Type path of to the script including script ( /path/script. )"
 read path
 sudo mkdir $path #will create path if it does not exist or just fail
 
-sudo echo '
+sudo echo "
 [Unit]
 Description= CPU monitor
 After=Network.target
@@ -22,16 +22,18 @@ Restart=10
 ExecStart=/bin/sh "$path"
 
 [Install]
-WantedBy=multi-user.target' | tee -a /etc/systemd/system/$service.service
+WantedBy=multi-user.target" | tee -a /etc/systemd/system/$service.service
 
 sudo chmod 755 /etc/systemd/system/$service.service
 sudo echo "plese put script in script-folder"
 read -p "Have you done it (y/n)?" yn
    case $yn in
     [Yy]* ) sudo systemctl daemon-reload
+            echo "press ctrl c to exit script and tail -f /var/log/$service.log to follow the log"
             sudo systemctl start $service
     ;;
 
     [Nn]* ) exit;;
     * ) echo 'Please answer yes or no.';;
    esac
+exit
