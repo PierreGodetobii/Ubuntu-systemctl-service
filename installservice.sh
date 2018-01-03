@@ -19,7 +19,7 @@ User=root
 Restart=always
 Type=forking
 Restart=10
-ExecStart=/bin/sh $path
+ExecStart=/bin/sh "$path"
 
 [Install]
 WantedBy=multi-user.target' | tee -a /etc/systemd/system/$service.service
