@@ -7,9 +7,11 @@ echo "Type the name of the service"
 read service
 echo "Type path of to the script including script ( /path/script. )"
 read path
+echo "Type description of service"
+read description
 sudo echo "
 [Unit]
-Description= CPU monitor
+Description= $description
 After=Network.target
 
 [Service]
