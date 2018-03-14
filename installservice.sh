@@ -31,6 +31,7 @@ read -p "Have you done it (y/n)?" yn
     [Yy]* ) sudo systemctl daemon-reload
             echo "press ctrl c to exit script and tail -f yourlog.log to follow the log"
             sudo systemctl start $service
+            sudo systemctl status $service
     ;;
 
     [Nn]* ) exit;;
