@@ -4,14 +4,16 @@ do
 dates=$( date +"%T" )
 addr1=$( echo "192.168.1.170" )
 addr2=$( echo "192.168.1.131")
-user1=$( nmap -sn $addr1 | egrep "scan report" | awk '{print $5}' )
-user2=$( nmap -sn $addr2 | egrep "scan report" | awk '{print $5}' )
+user1=$( nmap -sn $addr1 | egrep "scan report" | awk '{print $6}' | cut -d ')' -f1 | cut -d '(' -f2 )
+user2=$( nmap -sn $addr2 | egrep "scan report" | awk '{print $6}' | cut -d ')' -f1 | cut -d '(' -f2 )
 on=$( vcgencmd display_power )
 if [ "$user1" = "$addr1" ]
 then
   if [ "$on" = "display_power=1" ]
   then
   echo "$dates screen is on for $addr1" | sudo tee -a /var/log/screen.log
+  sleep 10
+  exit
   else
   echo "$dates screen is off for $addr1 , but user is home. turning on screen" | sudo tee -a /var/log/screen.log
   vcgencmd display_power 1 2
