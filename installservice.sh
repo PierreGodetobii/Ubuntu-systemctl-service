@@ -2,6 +2,8 @@
 #for Ubuntu 16-20 + raspbian
 #Working Beta!
 
+# Make sure having your running script ready and in a known path before running this script
+
 echo "Type the name of the service"
 read service
 echo "Type path of to the script including script ( /path/script. )"
