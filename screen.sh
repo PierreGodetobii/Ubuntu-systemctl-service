@@ -25,6 +25,8 @@ echo "$dates user $addr1 is not home. checking for $addr2 .." | sudo tee -a /var
       if [ "$on" = "display_power=1" ]
       then
       echo "$dates screen is on for $addr2" | sudo tee -a /var/log/screen.log
+      sleep 10
+      exit
       else
       echo "$dates screen is off for $addr2 but user is home. turning on screen" | sudo tee -a /var/log/screen.log
       vcgencmd display_power 1 2
