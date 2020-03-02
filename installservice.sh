@@ -1,7 +1,6 @@
 #!/bin/sh
-#for Ubuntu 16-17 only
-#Alpha!
-#This is the first version so it will be a service running a script, updates will come
+#for Ubuntu 16-20 + raspbian
+#Working Beta!
 
 echo "Type the name of the service"
 read service
@@ -25,7 +24,7 @@ ExecStart=/bin/sh "$path"
 WantedBy=multi-user.target" | tee -a /etc/systemd/system/$service.service
 
 sudo chmod 755 /etc/systemd/system/$service.service
-sudo echo "plese put script in script-folder"
+sudo echo "please put script in script-folder"
 read -p "Have you done it (y/n)?" yn
    case $yn in
     [Yy]* ) sudo systemctl daemon-reload
